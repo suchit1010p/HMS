@@ -12,3 +12,5 @@ pycparser
 pyparsing
 python-decouple
 qrcode
+pymysql
+
