@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            100: '#E5E7EB',
+                            200: '#D1D5DB',
+                            300: '#9CA3AF',
+                            400: '#6B7280',
+                            500: '#4B5563',
+                            600: '#374151',
+                            700: '#1F2937',
+                            800: '#111827',
+                            900: '#0F172A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="/static/style/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 dark:bg-dark-800">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white sticky top-0 z-[100] shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-xl font-bold flex items-center">
+                        <i class="fas fa-home mr-2"></i>
+                        HMS
+                    </a>
+                </div>
+                <!-- Links -->
+                <div class="hidden md:flex space-x-4 items-center">
+                    <a href="#home" class="hover:bg-blue-700 transition px-3 py-2 rounded-md">Home</a>
+                    <a href="#about" class="hover:bg-blue-700 transition px-3 py-2 rounded-md">About</a>
+                    <a href="#facilities" class="hover:bg-blue-700 transition px-3 py-2 rounded-md">Facilities</a>
+                    <a href="#contact" class="hover:bg-blue-700 transition px-3 py-2 rounded-md">Contact</a>
+                    <a href="/login" class="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-100 transition">Login</a>
+                    <!-- Dark mode toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-full focus:outline-none">
+                        <i class="fas fa-moon text-white" id="theme-icon"></i>
+                    </button>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden relative z-[100]">
+                    <button class="mobile-menu-button p-2 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden bg-blue-700 z-[99]">
+            <a href="#home" class="block px-4 py-2 hover:bg-blue-600">Home</a>
+            <a href="#about" class="block px-4 py-2 hover:bg-blue-600">About</a>
+            <a href="#facilities" class="block px-4 py-2 hover:bg-blue-600">Facilities</a>
+            <a href="#contact" class="block px-4 py-2 hover:bg-blue-600">Contact</a>
+            <a href="/login/" class="block px-4 py-2 bg-white text-blue-600 font-medium">Login</a>
+            <!-- Dark mode toggle for mobile -->
+            <button id="theme-toggle-mobile" class="block w-full text-left px-4 py-2 hover:bg-blue-600">
+                <i class="fas fa-moon mr-2"></i> Toggle Dark Mode
+            </button>
+        </div>
+    </nav>

@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color: #4CAF50;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(to right, #4CAF50, #45a049);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(to right, #45a049, #4CAF50);
+            transform: scale(1.05);
+        }
+        .download-button {
+            background: linear-gradient(to right, #007BFF, #0056b3);
+        }
+        .download-button:hover {
+            background: linear-gradient(to right, #0056b3, #007BFF);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Include jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Registration Successful!</h1>
+    <p>Congratulations! You have successfully registered.</p>
+    <p>Please proceed to the hostel to verify your documents.</p>
+    
+    <a href="/" class="button">View Hostel Information</a>
+    <br>
+    <a href="{% url 'student_pdf' %}" class="button download-button">Download Registration Details</a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,266 @@
+    <!-- Registration Modal -->
+    <div id="registrationModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
+            </div>
+            
+            <!-- Modal content -->
+            <div class="inline-block align-bottom bg-white dark:bg-dark-700 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="px-6 py-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-white">Create New Account</h3>
+                        <button onclick="closeRegistrationModal()" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="registrationForm" class="space-y-4" method="POST" action="{% url 'register' %}">
+                        {% csrf_token %}
+                        <!-- Personal Information -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">First Name*</label>
+                                <input type="text" id="firstName" name="firstName" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Last Name*</label>
+                                <input type="text" id="lastName" name="lastName" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address*</label>
+                            <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number*</label>
+                                <input type="tel" id="phone" name="phone" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                            </div>
+                            <div>
+                                <label for="dob" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date of Birth*</label>
+                                <input type="date" id="dob" name="dob" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                            </div>
+                        </div>
+                        
+                        <!-- Address Information -->
+                        <div class="border-t border-gray-200 dark:border-gray-600 pt-4 mt-4">
+                            <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-2">Address Information</h4>
+                            <div>
+                                <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Street Address*</label>
+                                <input type="text" id="address" name="address" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                                <div>
+                                    <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City*</label>
+                                    <input type="text" id="city" name="city" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="state" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">State*</label>
+                                    <input type="text" id="state" name="state" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="zip" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">ZIP Code*</label>
+                                    <input type="text" id="zip" name="zip" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Education Information -->
+                        <div class="border-t border-gray-200 dark:border-gray-600 pt-4 mt-4">
+                            <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-2">Education Information</h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="university" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">University*</label>
+                                    <input type="text" id="university" name="university" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="enrollmentYear" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Enrollment Year*</label>
+                                    <input type="number" id="enrollmentYear" name="enrollmentYear" required min="1900" max="2100" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                <div>
+                                    <label for="course" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Course*</label>
+                                    <input type="text" id="course" name="course" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="programDuration" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Program Duration (Years)*</label>
+                                    <input type="number" id="programDuration" name="programDuration" required min="1" max="10" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                </div>
+                            </div>
+
+                                
+                        </div>
+
+
+                        <!-- Account Credentials -->
+                        <div class="border-t border-gray-200 dark:border-gray-600 pt-4 mt-4">
+                            <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-2">Account Credentials</h4>
+                            <div>
+                                <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username*</label>
+                                <input type="text" id="username" name="username" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                <div>
+                                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password*</label>
+                                    <input type="password" id="password" name="password" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                </div>
+                                <div>
+                                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password*</label>
+                                    <input type="password" id="confirmPassword" name="confirmPassword" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- User Type -->
+                        <div class="border-t border-gray-200 dark:border-gray-600 pt-4 mt-4">
+                            <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-2">User Type*</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input id="student" name="userType" type="radio" value="student" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 dark:bg-dark-800">
+                                    <label for="student" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Student</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Terms and Conditions -->
+                        <div class="flex items-start mt-4">
+                            <div class="flex items-center h-5">
+                                <input id="terms" name="terms" type="checkbox" required class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded dark:bg-dark-800">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="terms" class="font-medium text-gray-700 dark:text-gray-300">I agree to the <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-500">Terms and Conditions</a> and <a href="#" class="text-blue-600 dark:text-blue-400 hover:text-blue-500">Privacy Policy</a></label>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="mt-6">
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition">
+                                Create Account <i class="fas fa-user-plus ml-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
+            </div>
+            
+            <!-- Modal content -->
+            <div class="inline-block align-bottom bg-white dark:bg-dark-700 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
+                <div class="px-6 py-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-white">Sign In</h3>
+                        <button onclick="closeLoginModal()" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="loginForm" class="space-y-6" method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div>
+                            <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username: </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-envelope text-gray-400 dark:text-gray-500"></i>
+                                </div>
+                                <input id="username" name="username" type="text" required 
+                                    class="pl-10 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white" 
+                                    placeholder="Enter your username">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="loginPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-lock text-gray-400 dark:text-gray-500"></i>
+                                </div>
+                                <input id="loginPassword" name="password" type="password" required 
+                                    class="pl-10 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white" 
+                                    placeholder="••••••••">
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <button type="button" class="text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none" onclick="togglePasswordVisibility('loginPassword', 'loginPasswordIcon')">
+                                        <i class="fas fa-eye" id="loginPasswordIcon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input id="remember" name="remember" type="checkbox" 
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded dark:bg-dark-800">
+                                <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                    Remember me
+                                </label>
+                            </div>
+                            
+                            <div class="text-sm">
+                                <a href="#" class="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
+                                    Forgot password?
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <button type="submit" 
+                                class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                                <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                                    <i class="fas fa-sign-in-alt text-blue-300 group-hover:text-blue-200"></i>
+                                </span>
+                                Sign In
+                            </button>
+                        </div>
+                        
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white dark:bg-dark-700 text-gray-500 dark:text-gray-400">
+                                    Or continue with
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-dark-800 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-600 transition">
+                                    <i class="fab fa-google text-red-500 mr-2"></i> Google
+                                </button>
+                            </div>
+                            
+                            <div>
+                                <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-dark-800 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-600 transition">
+                                    <i class="fab fa-facebook-f text-blue-600 mr-2"></i> Facebook
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center text-sm text-gray-600 dark:text-gray-400">
+                            Don't have an account? 
+                            <button type="button" onclick="switchToRegistration()" class="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
+                                Register here
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

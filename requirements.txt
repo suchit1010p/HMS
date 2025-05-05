@@ -1,0 +1,14 @@
+asgiref
+blinker
+decouple
+Deprecated
+Django
+django-tinymce
+fpdf
+Jinja2
+pillow
+psycopg2-binary
+pycparser
+pyparsing
+python-decouple
+qrcode

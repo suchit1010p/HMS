@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            100: '#E5E7EB',
+                            200: '#D1D5DB',
+                            300: '#9CA3AF',
+                            400: '#6B7280',
+                            500: '#4B5563',
+                            600: '#374151',
+                            700: '#1F2937',
+                            800: '#111827',
+                            900: '#0F172A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style/index.css">
+</head>
+<body class="bg-gray-100 dark:bg-dark-800">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-xl font-bold flex items-center">
+                        <i class="fas fa-home mr-2"></i>
+                        HMS
+                    </a>
+                </div>
+                <!-- Links -->
+                <div class="hidden md:flex space-x-4 items-center">
+                    <a href="/" class="hover:bg-blue-700 transition px-3 py-2 rounded-md">Home</a>
+                    <a href="#about" class="hover:bg-blue-700 transition px-3 py-2 rounded-md">About</a>
+                    <a href="#contact" class="hover:bg-blue-700 transition px-3 py-2 rounded-md">Contact Us</a>
+                    <!-- Dark mode toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-full focus:outline-none">
+                        <i class="fas fa-moon text-white" id="theme-icon"></i>
+                    </button>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button class="mobile-menu-button p-2 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden bg-blue-700">
+            <a href="#home" class="block px-4 py-2 hover:bg-blue-600">Home</a>
+            <a href="#about" class="block px-4 py-2 hover:bg-blue-600">About</a>
+            <a href="#contact" class="block px-4 py-2 hover:bg-blue-600">Contact Us</a>
+            <!-- Dark mode toggle for mobile -->
+            <button id="theme-toggle-mobile" class="block w-full text-left px-4 py-2 hover:bg-blue-600">
+                <i class="fas fa-moon mr-2"></i> Toggle Dark Mode
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Login Options -->
+    <section id="home" class="min-h-[90vh] flex items-center justify-center relative">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-8 fade-in">Hostel Management System</h1>
+            
+            <!-- Login Options -->
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 mt-16">
+                <!-- New User Card -->
+                <div class="slide-left bg-white dark:bg-dark-700 rounded-xl shadow-2xl p-8 w-full md:w-1/3 hover-grow">
+                    <div class="text-blue-600 dark:text-blue-400 text-5xl mb-4">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">New User</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Create an account to access the hostel management system.</p>
+                    <button onclick="openRegistrationModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full text-lg transition">
+                        Register <i class="fas fa-user-plus ml-2"></i>
+                    </button>
+                </div>
+                
+                <!-- Login Card -->
+                <div class="slide-right bg-white dark:bg-dark-700 rounded-xl shadow-2xl p-8 w-full md:w-1/3 hover-grow">
+                    <div class="text-green-600 dark:text-green-400 text-5xl mb-4">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Login</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Access your student portal to manage your account.</p>
+                    <button onclick="openLoginModal()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full text-lg transition">
+                        Login <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white dark:bg-dark-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">About Our Hostel</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto mt-4"></div>
+                <p class="text-gray-600 dark:text-gray-300 mt-4 max-w-2xl mx-auto">
+                    We provide comfortable and affordable accommodation for students with modern amenities 
+                    and a supportive community environment.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 dark:bg-dark-800 p-6 rounded-lg shadow-md fade-in">
+                    <div class="text-blue-600 dark:text-blue-400 text-3xl mb-4">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Comfortable Living</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Spacious rooms with modern furniture and ample storage space for your belongings.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-dark-800 p-6 rounded-lg shadow-md fade-in" style="animation-delay: 0.2s;">
+                    <div class="text-blue-600 dark:text-blue-400 text-3xl mb-4">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">High-Speed Internet</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Reliable high-speed internet connection available throughout the hostel premises.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-dark-800 p-6 rounded-lg shadow-md fade-in" style="animation-delay: 0.4s;">
+                    <div class="text-blue-600 dark:text-blue-400 text-3xl mb-4">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Healthy Meals</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Nutritious and hygienic meals served in our modern dining facility.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include "form.html" %}
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-50 dark:bg-dark-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Contact Us</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto mt-4"></div>
+                <p class="text-gray-600 dark:text-gray-300 mt-4 max-w-2xl mx-auto">Have questions? Get in touch with our team for more information about our hostel facilities and services.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="fade-in">
+                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Send us a message</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-gray-700 dark:text-gray-300 mb-2">Your Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+                            <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white"></textarea>
+                        </div>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition">
+                            Send Message <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="fade-in" style="transition-delay: 0.3s;">
+                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Contact Information</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-300">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 dark:text-white">Address</h4>
+                                <p class="text-gray-600 dark:text-gray-300">Ahmedabad</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-300">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 dark:text-white">Phone</h4>
+                                <p class="text-gray-600 dark:text-gray-300">+91 9999999999</p>
+                                <p class="text-gray-600 dark:text-gray-300">100 (Emergency)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-300">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 dark:text-white">Email</h4>
+                                <p class="text-gray-600 dark:text-gray-300">info@hostelmanagementsystem.com</p>
+                                <p class="text-gray-600 dark:text-gray-300">support@hostelmanagementsystem.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-300">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 dark:text-white">Office Hours</h4>
+                                <p class="text-gray-600 dark:text-gray-300">Monday - Friday: 9:00 AM - 5:00 PM</p>
+                                <p class="text-gray-600 dark:text-gray-300">Saturday: 10:00 AM - 2:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h4 class="font-semibold text-gray-800 dark:text-white mb-4">Follow Us</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 p-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 p-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 p-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 p-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> 
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 dark:bg-dark-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">HMS</h3>
+                    <p class="text-gray-400">Providing quality hostel management solutions for educational institutions.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition">About</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Connect With Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 dark:border-gray-600 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 Hostel Management System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/style/script.js"></script>
+</body>
+</html>

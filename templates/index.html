@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block HMS %}
+
+<!-- Hero Section with Carousel -->
+<section id="home" class="relative">
+    <div id="carousel" class="w-full overflow-hidden relative">
+        <div class="absolute inset-0 flex transition-transform duration-500 ease-out" id="carousel-images">
+            <img src="/static/media/Effective-Hostel-PMS-for-Hostel-Management.jpg">
+            <img src="/static/media/Scholars-Institute-building.png" alt="Hostel Room" class="w-full h-full object-cover">
+            <img src="/static/media/13530117_5276519.jpg" alt="Hostel Common Area" class="w-full h-full object-cover">
+            <img src="/static/media/30971554_99z_2206_w009_n001_150b_p14_150.jpg" alt="Hostel Bedroom" class="w-full h-full object-cover">
+            <img src="/static/media/6168544_23206.jpg" alt="Hostel Kitchen" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+            <div class="text-center text-white px-4">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 fade-in">Welcome To Hostel Management System</h1>
+                <p class="text-xl md:text-2xl mb-8 fade-in" style="transition-delay: 0.2s;">Your home away from home</p>
+                <a href="#facilities" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full text-lg transition fade-in" style="transition-delay: 0.4s;">
+                    Explore Our Facilities <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Navigation Arrows -->
+    <button id="prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 z-10">
+        &larr;
+    </button>
+    <button id="next" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 z-10">
+        &rarr;
+    </button>
+    <!-- Progress Indicators -->
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-2 z-10">
+        <div class="progress-indicator active" data-index="0"></div>
+        <div class="progress-indicator" data-index="1"></div>
+        <div class="progress-indicator" data-index="2"></div>
+        <div class="progress-indicator" data-index="3"></div>
+        <div class="progress-indicator" data-index="4"></div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-16 bg-white dark:bg-dark-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">About Our Hostel</h2>
+            <div class="w-20 h-1 bg-blue-600 mx-auto mt-4"></div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="fade-in">
+                <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Comfortable Living Spaces</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">Our hostel provides a safe, comfortable, and vibrant living environment for students. We understand the importance of a good living space for academic success and personal growth.</p>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">With over 15 years of experience in student accommodation, we've perfected the balance between community living and personal space.</p>
+                <div class="flex flex-wrap gap-4">
+                    <div class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 px-4 py-2 rounded-full flex items-center fade-in staggered-delay">
+                        <i class="fas fa-wifi mr-2"></i> Free WiFi
+                    </div>
+                    <div class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 px-4 py-2 rounded-full flex items-center fade-in staggered-delay">
+                        <i class="fas fa-utensils mr-2"></i> Meal Plans
+                    </div>
+                    <div class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 px-4 py-2 rounded-full flex items-center fade-in staggered-delay">
+                        <i class="fas fa-dumbbell mr-2"></i> Gym Access
+                    </div>
+                    <div class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 px-4 py-2 rounded-full flex items-center fade-in staggered-delay">
+                        <i class="fas fa-book mr-2"></i> Study Rooms
+                    </div>
+                </div>
+            </div>
+            <div class="relative fade-in" style="transition-delay: 0.3s;">
+                <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Hostel Common Area" class="rounded-lg shadow-xl w-full h-auto">
+                <div class="absolute -bottom-6 -right-6 bg-blue-600 text-white p-4 rounded-lg shadow-lg floating hidden md:block">
+                    <div class="text-3xl font-bold">15+</div>
+                    <div class="text-sm">Years Experience</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Facilities Section -->
+<section id="facilities" class="py-16 bg-gray-50 dark:bg-dark-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Our Facilities</h2>
+            <div class="w-20 h-1 bg-blue-600 mx-auto mt-4"></div>
+            <p class="text-gray-600 dark:text-gray-300 mt-4 max-w-2xl mx-auto">We provide top-notch facilities to ensure our residents have everything they need for comfortable living and academic success.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {%for i in servicedata %}
+            <!-- Facility Card 1 -->
+            <div class="bg-white dark:bg-dark-700 rounded-lg overflow-hidden shadow-md card-hover fade-in staggered-delay">
+                <div class="h-48 overflow-hidden">
+                    <img src="{{i.img_location}}" alt="Comfortable Rooms" class="w-full h-full object-cover transition duration-500 hover:scale-105">
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-300">
+                            <i class="{{i.icon_name}}"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-white">{{i.ser_name}}</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">{{i.description}}</p>
+                </div>
+            </div>
+            
+            
+            {%endfor%}
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

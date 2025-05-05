@@ -1,0 +1,107 @@
+<!-- Contact Section -->
+<section id="contact" class="py-16 bg-gray-50 dark:bg-dark-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Contact Us</h2>
+            <div class="w-20 h-1 bg-blue-600 mx-auto mt-4"></div>
+            <p class="text-gray-600 dark:text-gray-300 mt-4 max-w-2xl mx-auto">Have questions? Get in touch with our team for more information about our hostel facilities and services.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="fade-in">
+                <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Send us a message</h3>
+                <form class="space-y-4" action="{% url 'save' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div>
+                        <label for="name" class="block text-gray-700 dark:text-gray-300 mb-2">Your Name</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white" required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white" required>
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-gray-700 dark:text-gray-300 mb-2">Phone number</label>
+                        <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                    </div>
+                    <div>
+                        <label for="subject" class="block text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+                        <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white" required>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                        <textarea id="message" rows="4" name="message" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition">
+                        Send Message <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- The rest of your contact information section remains unchanged -->
+            <div class="fade-in" style="transition-delay: 0.3s;">
+                <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Contact Information</h3>
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-300">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800 dark:text-white">Address</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Ahmedabad</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-300">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800 dark:text-white">Phone</h4>
+                            <p class="text-gray-600 dark:text-gray-300">+91 9999999999</p>
+                            <p class="text-gray-600 dark:text-gray-300">100 (Emergency)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-300">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800 dark:text-white">Email</h4>
+                            <p class="text-gray-600 dark:text-gray-300">info@hostelmanagementsystem.com</p>
+                            <p class="text-gray-600 dark:text-gray-300">support@hostelmanagementsystem.com</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4 text-blue-600 dark:text-blue-300">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800 dark:text-white">Office Hours</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Monday - Friday: 9:00 AM - 5:00 PM</p>
+                            <p class="text-gray-600 dark:text-gray-300">Saturday: 10:00 AM - 2:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <h4 class="font-semibold text-gray-800 dark:text-white mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 p-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 p-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 p-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 p-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
