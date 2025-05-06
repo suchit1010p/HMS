@@ -103,10 +103,16 @@ USE_TZ = True
 
 
 # Static and media files
+# Static files settings
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# During development, we include files in the 'static' folder directly
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# During deployment, static files will be collected in this folder
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Use WhiteNoise to serve static files efficiently
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
