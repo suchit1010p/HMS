@@ -1,6 +1,5 @@
 asgiref
 blinker
-decouple
 Deprecated
 Django
 django-tinymce
