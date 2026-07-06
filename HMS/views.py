@@ -144,6 +144,7 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard.html', {'student_data': student_data,'active_complaints_count': active_complaints_count})
 
+@login_required
 def complaints(request):
     complaints = Complaint.objects.filter(student__user=request.user).order_by('-date_submitted')
     context = {
@@ -159,15 +160,19 @@ def complaints(request):
     }
     return render(request, 'dashboard/complaints.html', context)
 
+@login_required
 def payments(request):
     return render(request, 'dashboard/payments.html')
 
+@login_required
 def profile(request):
     return render(request, 'dashboard/profile.html')
 
+@login_required
 def settings(request):
     return render(request, 'dashboard/settings.html')
 
+@login_required
 def documents(request):
     Eventdata = Events.objects.all()[:6]
     Noticedata = Notice.objects.all()[:6]
@@ -204,15 +209,16 @@ class PDF(FPDF):
         self.set_text_color(150, 150, 150)
         self.cell(0, 10, f'Page {self.page_no()}', align='C')
 
+@login_required
 def generate_student_pdf(request):
-    try:
-        student = Students_data.objects.filter(user=request.user).first()
-        room = student.room if student and student.room else None
-    except Students_data.DoesNotExist:
+    student = Students_data.objects.filter(user=request.user).first()
+    if student is None:
         return HttpResponse("Student data not found.", status=404)
 
+    room = student.room if student.room else None
+
     # Generate QR code and save to a temp file
-    qr_data = f"Name: {User.first_name}\nEmail: {User.email}\nEnrollment Year: {student.enrollmentYear}"
+    qr_data = f"Name: {request.user.first_name}\nEmail: {request.user.email}\nEnrollment Year: {student.enrollmentYear}"
     qr_img = qrcode.make(qr_data)
 
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as qr_temp:
