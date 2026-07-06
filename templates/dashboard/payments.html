@@ -1,36 +1,481 @@
 {% extends "dashboard/base.html" %}
+{% block title %}Payments — HMS{% endblock %}
 
 {% block content %}
-<div class="bg-white dark:bg-dark-700 rounded-lg shadow p-6">
-    <h2 class="text-xl font-semibold dark:text-white mb-6">My Documents</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Sample document cards - replace with actual documents -->
-        <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-            <div class="flex items-center mb-3">
-                <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 mr-3">
-                    <i class="fas fa-file-pdf text-xl"></i>
-                </div>
+<div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Payments</h1>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Manage your hostel fee payments and download receipts.</p>
+</div>
+
+<!-- Stats row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 flex items-center gap-4 fade-in">
+        <div
+            class="bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Total Paid</p>
+            <p class="text-2xl font-bold text-gray-800 dark:text-white">₹{{ total_paid }}</p>
+        </div>
+    </div>
+    <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 flex items-center gap-4 fade-in">
+        <div
+            class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fas fa-receipt"></i>
+        </div>
+        <div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Transactions</p>
+            <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ payment_list|length }}</p>
+        </div>
+    </div>
+    <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 flex items-center gap-4 fade-in">
+        <div
+            class="bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300 w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Due This Month</p>
+            <p class="text-2xl font-bold text-gray-800 dark:text-white">₹{{ due_this_month }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Pay Now Card -->
+<div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-6 mb-6 fade-in border-l-4 border-blue-600">
+    <div class="flex flex-wrap items-start justify-between gap-6">
+        <div class="flex-1">
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-2">
+                <i class="fas fa-credit-card text-blue-600 dark:text-blue-400"></i> Pay Hostel Fees
+            </h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Select a fee type below, then click <strong>Pay
+                    Now</strong> to open the secure payment sandbox.</p>
+
+            <!-- Fee Type Selector -->
+            <div class="flex flex-wrap gap-2">
+                <button type="button" onclick="selectType(this, 5000, 'hostel_fee')" data-active="true"
+                    class="pay-type-btn text-sm px-4 py-2 rounded-lg border font-medium transition border-blue-600 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-200">
+                    <i class="fas fa-home mr-1"></i> Hostel Fee — ₹5,000
+                </button>
+                <button type="button" onclick="selectType(this, 3000, 'mess_fee')"
+                    class="pay-type-btn text-sm px-4 py-2 rounded-lg border font-medium transition border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:border-blue-500">
+                    <i class="fas fa-utensils mr-1"></i> Mess Fee — ₹3,000
+                </button>
+                <button type="button" onclick="selectType(this, 2000, 'maintenance')"
+                    class="pay-type-btn text-sm px-4 py-2 rounded-lg border font-medium transition border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:border-blue-500">
+                    <i class="fas fa-tools mr-1"></i> Maintenance — ₹2,000
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-center gap-2 flex-shrink-0">
+            <div class="text-right mb-1">
+                <p class="text-xs text-gray-400 dark:text-gray-500">Amount due</p>
+                <p id="selectedAmtDisplay" class="text-2xl font-bold text-blue-600 dark:text-blue-400">₹5,000</p>
+            </div>
+            <button id="payNowBtn" onclick="openModal('paymentModal')"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl text-base transition shadow-md flex items-center gap-2">
+                <i class="fas fa-lock"></i> Pay Now
+            </button>
+            <p class="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
+                <i class="fas fa-shield-alt"></i> Sandbox — No real payment
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Payment History Table -->
+<div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-6 fade-in">
+    <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+        <i class="fas fa-history text-blue-600 dark:text-blue-400"></i> Payment History
+    </h2>
+
+    {% if payment_list %}
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-200 dark:border-dark-600">
+                    <th
+                        class="text-left py-3 px-3 text-xs uppercase tracking-wide font-semibold text-gray-400 dark:text-gray-500">
+                        #</th>
+                    <th
+                        class="text-left py-3 px-3 text-xs uppercase tracking-wide font-semibold text-gray-400 dark:text-gray-500">
+                        Type</th>
+                    <th
+                        class="text-left py-3 px-3 text-xs uppercase tracking-wide font-semibold text-gray-400 dark:text-gray-500">
+                        Amount</th>
+                    <th
+                        class="text-left py-3 px-3 text-xs uppercase tracking-wide font-semibold text-gray-400 dark:text-gray-500">
+                        Transaction ID</th>
+                    <th
+                        class="text-left py-3 px-3 text-xs uppercase tracking-wide font-semibold text-gray-400 dark:text-gray-500">
+                        Date</th>
+                    <th
+                        class="text-left py-3 px-3 text-xs uppercase tracking-wide font-semibold text-gray-400 dark:text-gray-500">
+                        Status</th>
+                    <th
+                        class="text-left py-3 px-3 text-xs uppercase tracking-wide font-semibold text-gray-400 dark:text-gray-500">
+                        Receipt</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-dark-600">
+                {% for payment in payment_list %}
+                <tr class="hover:bg-gray-50 dark:hover:bg-dark-600 transition">
+                    <td class="py-3 px-3 text-gray-400">{{ forloop.counter }}</td>
+                    <td class="py-3 px-3 font-medium text-gray-800 dark:text-white">{{ payment.get_payment_type_display }}</td>
+                    <td class="py-3 px-3 font-bold text-green-600 dark:text-green-400">₹{{ payment.amount }}</td>
+                    <td class="py-3 px-3 font-mono text-xs text-gray-500 dark:text-gray-400">{{ payment.razorpay_payment_id|default:"—" }}</td>
+                    <td class="py-3 px-3 text-gray-500 dark:text-gray-400">{{ payment.paid_at|date:"d M Y, g:i A"|default:"—" }}</td>
+                    <td class="py-3 px-3">
+                        <span
+                            class="text-xs px-2.5 py-1 rounded-full font-semibold
+                            {% if payment.status == 'paid' %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300
+                            {% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300{% endif %}">
+                            {{ payment.status|capfirst }}
+                        </span>
+                    </td>
+                    <td class="py-3 px-3">
+                        {% if payment.status == 'paid' %}
+                        <a href="{% url 'student_pdf' %}?payment_id={{ payment.id }}"
+                            class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md transition inline-flex items-center gap-1">
+                            <i class="fas fa-download"></i> PDF
+                        </a>
+                        {% else %}<span class="text-gray-400">—</span>{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-16">
+        <div class="text-6xl mb-4 opacity-20">💳</div>
+        <p class="text-gray-500 dark:text-gray-400 font-medium">No payments yet</p>
+        <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Click <strong>Pay Now</strong> above to make your first
+            payment.</p>
+    </div>
+    {% endif %}
+</div>
+
+
+<!-- ──────────────── SANDBOX PAYMENT MODAL ──────────────── -->
+<div id="paymentModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen p-4 bg-black bg-opacity-60 backdrop-blur-sm">
+        <div class="bg-white dark:bg-dark-700 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" id="payModalBox">
+
+            <!-- Modal header — branded blue like a real gateway -->
+            <div class="bg-blue-600 px-6 py-5 flex items-center justify-between">
                 <div>
-                    <h3 class="font-medium dark:text-white">Fee Receipt</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">June 2023</p>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-lock text-blue-200 text-sm"></i>
+                        <span class="text-white font-bold text-lg">Secure Payment</span>
+                    </div>
+                    <p class="text-blue-200 text-xs mt-0.5">HMS Hostel Management — Sandbox</p>
+                </div>
+                <button onclick="closeModal('paymentModal')"
+                    class="text-blue-200 hover:text-white transition text-xl focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Amount bar -->
+            <div
+                class="bg-blue-50 dark:bg-blue-900 px-6 py-3 flex items-center justify-between border-b border-blue-100 dark:border-blue-800">
+                <div>
+                    <p class="text-xs text-blue-600 dark:text-blue-300 font-medium uppercase tracking-wide">Amount to
+                        Pay</p>
+                    <p id="modalAmtDisplay" class="text-2xl font-bold text-blue-700 dark:text-blue-200">₹5,000</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs text-blue-500 dark:text-blue-400" id="modalTypeDisplay">Hostel Fee</p>
+                    <p class="text-xs text-blue-400 dark:text-blue-500">Sandbox Mode</p>
                 </div>
             </div>
-            <div class="flex justify-end space-x-2">
-                <a href="{% url 'student_pdf' %}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 text-sm">
-                    <i class="fas fa-download mr-1"></i> Download
-                </a>
-                <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 text-sm">
-                    <i class="fas fa-eye mr-1"></i> View
-                </a>
+
+            <!-- Payment form -->
+            <div class="px-6 py-5" id="payFormSection">
+                <!-- Tabs -->
+                <div class="flex gap-1 bg-gray-100 dark:bg-dark-800 p-1 rounded-lg mb-5">
+                    <button onclick="switchTab('card')" id="tab-card"
+                        class="tab-btn flex-1 text-sm font-medium py-2 rounded-md transition bg-white dark:bg-dark-600 text-blue-600 dark:text-blue-300 shadow-sm">
+                        <i class="fas fa-credit-card mr-1"></i> Card
+                    </button>
+                    <button onclick="switchTab('upi')" id="tab-upi"
+                        class="tab-btn flex-1 text-sm font-medium py-2 rounded-md transition text-gray-500 dark:text-gray-400">
+                        <i class="fas fa-mobile-alt mr-1"></i> UPI
+                    </button>
+                    <button onclick="switchTab('netbanking')" id="tab-netbanking"
+                        class="tab-btn flex-1 text-sm font-medium py-2 rounded-md transition text-gray-500 dark:text-gray-400">
+                        <i class="fas fa-university mr-1"></i> Net Banking
+                    </button>
+                </div>
+
+                <!-- Card Tab -->
+                <div id="tab-card-content">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Card
+                                Number</label>
+                            <div class="relative">
+                                <input type="text" id="cardNum" maxlength="19" placeholder="1234  5678  9012  3456"
+                                    oninput="formatCard(this)"
+                                    class="w-full px-3 py-2.5 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white font-mono tracking-widest">
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+                                    <i class="fab fa-cc-visa text-blue-700 text-lg"></i>
+                                    <i class="fab fa-cc-mastercard text-red-500 text-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cardholder
+                                Name</label>
+                            <input type="text" id="cardName"
+                                placeholder="{{ user.get_full_name|default:user.username }}"
+                                class="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expiry
+                                    Date</label>
+                                <input type="text" id="cardExpiry" maxlength="5" placeholder="MM/YY"
+                                    oninput="formatExpiry(this)"
+                                    class="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CVV</label>
+                                <div class="relative">
+                                    <input type="password" id="cardCvv" maxlength="3" placeholder="•••"
+                                        class="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                                    <i
+                                        class="fas fa-question-circle absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UPI Tab -->
+                <div id="tab-upi-content" class="hidden">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">UPI ID</label>
+                        <input type="text" id="upiId" placeholder="yourname@upi"
+                            class="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Enter any UPI ID — sandbox mode</p>
+                    </div>
+                    <div class="mt-4 grid grid-cols-3 gap-2">
+                        <button type="button" onclick="document.getElementById('upiId').value='sandbox@gpay'"
+                            class="border border-gray-200 dark:border-gray-600 rounded-lg p-2 text-xs text-gray-600 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 transition">
+                            GPay
+                        </button>
+                        <button type="button" onclick="document.getElementById('upiId').value='sandbox@phonepe'"
+                            class="border border-gray-200 dark:border-gray-600 rounded-lg p-2 text-xs text-gray-600 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 transition">
+                            PhonePe
+                        </button>
+                        <button type="button" onclick="document.getElementById('upiId').value='sandbox@paytm'"
+                            class="border border-gray-200 dark:border-gray-600 rounded-lg p-2 text-xs text-gray-600 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 transition">
+                            Paytm
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Net Banking Tab -->
+                <div id="tab-netbanking-content" class="hidden">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select
+                            Bank</label>
+                        <select id="bankSelect"
+                            class="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
+                            <option value="">Choose your bank...</option>
+                            <option>State Bank of India</option>
+                            <option>HDFC Bank</option>
+                            <option>ICICI Bank</option>
+                            <option>Axis Bank</option>
+                            <option>Kotak Mahindra Bank</option>
+                            <option>Punjab National Bank</option>
+                            <option>Bank of Baroda</option>
+                        </select>
+                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Select any bank — sandbox mode, no real
+                            login required</p>
+                    </div>
+                </div>
+
+                <!-- Pay button -->
+                <button id="submitPayBtn" onclick="submitPayment()"
+                    class="mt-5 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-base transition flex items-center justify-center gap-2 shadow-md">
+                    <i class="fas fa-lock text-sm"></i>
+                    Pay <span id="btnAmtText">₹5,000</span> Securely
+                </button>
+
+                <p class="text-center text-xs text-gray-400 dark:text-gray-500 mt-3">
+                    <i class="fas fa-shield-alt mr-1"></i> 256-bit SSL encrypted · Sandbox simulation
+                </p>
+            </div>
+
+            <!-- Processing state (hidden by default) -->
+            <div id="processingSection" class="hidden px-6 py-12 text-center">
+                <div class="flex items-center justify-center mb-4">
+                    <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                </div>
+                <p class="text-lg font-bold text-gray-800 dark:text-white mb-1">Processing Payment...</p>
+                <p class="text-sm text-gray-400 dark:text-gray-500">Please wait, do not close this window</p>
             </div>
         </div>
     </div>
-    
-    <div class="mt-6">
-        <a href="/documents/upload" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition inline-block">
-            <i class="fas fa-upload mr-2"></i> Upload Document
-        </a>
+</div>
+
+<!-- Success Modal -->
+<div id="paymentSuccessModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen p-4 bg-black bg-opacity-60">
+        <div class="bg-white dark:bg-dark-700 rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center">
+            <div
+                class="w-20 h-20 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">
+                ✅
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-1">Payment Successful!</h3>
+            <p id="successMsg" class="text-sm text-gray-500 dark:text-gray-400 mb-2">Your payment has been confirmed.
+            </p>
+            <p id="txnId"
+                class="text-xs font-mono bg-gray-100 dark:bg-dark-800 rounded-lg p-2 mb-5 text-gray-600 dark:text-gray-300 break-all">
+            </p>
+            <div class="flex gap-3 justify-center">
+                <a href="#" id="downloadReceiptBtn"
+                    class="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition flex items-center gap-2">
+                    <i class="fas fa-download"></i> Download Receipt
+                </a>
+                <button onclick="closeModal('paymentSuccessModal'); window.location.reload();"
+                    class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-semibold px-5 py-2.5 rounded-lg transition hover:bg-gray-50 dark:hover:bg-dark-600">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    var selectedAmount = 5000;
+    var selectedType = 'hostel_fee';
+    var selectedTypeName = 'Hostel Fee';
+    var activeTab = 'card';
+
+    function selectType(btn, amount, type) {
+        document.querySelectorAll('.pay-type-btn').forEach(function (b) {
+            b.classList.remove('border-blue-600', 'bg-blue-50', 'dark:bg-blue-900', 'text-blue-700', 'dark:text-blue-200');
+            b.classList.add('border-gray-300', 'dark:border-gray-600', 'text-gray-600', 'dark:text-gray-300');
+        });
+        btn.classList.add('border-blue-600', 'bg-blue-50', 'dark:bg-blue-900', 'text-blue-700', 'dark:text-blue-200');
+        btn.classList.remove('border-gray-300', 'dark:border-gray-600', 'text-gray-600', 'dark:text-gray-300');
+        selectedAmount = amount;
+        selectedType = type;
+        selectedTypeName = btn.textContent.split('—')[0].trim();
+        var fmt = '₹' + amount.toLocaleString('en-IN');
+        document.getElementById('selectedAmtDisplay').textContent = fmt;
+        document.getElementById('modalAmtDisplay').textContent = fmt;
+        document.getElementById('btnAmtText').textContent = fmt;
+        document.getElementById('modalTypeDisplay').textContent = selectedTypeName;
+    }
+
+    function switchTab(tab) {
+        activeTab = tab;
+        ['card', 'upi', 'netbanking'].forEach(function (t) {
+            var btn = document.getElementById('tab-' + t);
+            var con = document.getElementById('tab-' + t + '-content');
+            if (t === tab) {
+                btn.classList.add('bg-white', 'dark:bg-dark-600', 'text-blue-600', 'dark:text-blue-300', 'shadow-sm');
+                btn.classList.remove('text-gray-500', 'dark:text-gray-400');
+                con.classList.remove('hidden');
+            } else {
+                btn.classList.remove('bg-white', 'dark:bg-dark-600', 'text-blue-600', 'dark:text-blue-300', 'shadow-sm');
+                btn.classList.add('text-gray-500', 'dark:text-gray-400');
+                con.classList.add('hidden');
+            }
+        });
+    }
+
+    // Open modal — also sync amount display
+    document.getElementById('payNowBtn').addEventListener('click', function () {
+        var fmt = '₹' + selectedAmount.toLocaleString('en-IN');
+        document.getElementById('modalAmtDisplay').textContent = fmt;
+        document.getElementById('btnAmtText').textContent = fmt;
+        document.getElementById('modalTypeDisplay').textContent = selectedTypeName;
+    });
+
+    function formatCard(el) {
+        var v = el.value.replace(/\D/g, '').slice(0, 16);
+        el.value = v.match(/.{1,4}/g)?.join('  ') || v;
+    }
+    function formatExpiry(el) {
+        var v = el.value.replace(/\D/g, '').slice(0, 4);
+        if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2);
+        el.value = v;
+    }
+
+    async function submitPayment() {
+        // Minimal validation per active tab
+        if (activeTab === 'card') {
+            var num = document.getElementById('cardNum').value.replace(/\s/g, '');
+            var name = document.getElementById('cardName').value.trim();
+            var exp = document.getElementById('cardExpiry').value.trim();
+            var cvv = document.getElementById('cardCvv').value.trim();
+            if (num.length < 4) { showToast('Enter a card number', 'error'); return; }
+            if (!name) { showToast('Enter cardholder name', 'error'); return; }
+            if (exp.length < 4) { showToast('Enter expiry date', 'error'); return; }
+            if (cvv.length < 3) { showToast('Enter CVV', 'error'); return; }
+        } else if (activeTab === 'upi') {
+            if (!document.getElementById('upiId').value.trim()) { showToast('Enter UPI ID', 'error'); return; }
+        } else if (activeTab === 'netbanking') {
+            if (!document.getElementById('bankSelect').value) { showToast('Select a bank', 'error'); return; }
+        }
+
+        // Show processing
+        document.getElementById('payFormSection').classList.add('hidden');
+        document.getElementById('processingSection').classList.remove('hidden');
+
+        // Simulate network delay (1.5s)
+        await new Promise(r => setTimeout(r, 1500));
+
+        try {
+            var cardName = activeTab === 'card'
+                ? (document.getElementById('cardName').value || '{{ user.get_full_name|default:user.username }}')
+                : '{{ user.get_full_name|default:user.username }}';
+
+            var res = await fetch('/mock-payment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    amount: selectedAmount,
+                    payment_type: selectedType,
+                    card_name: cardName,
+                })
+            });
+            var data = await res.json();
+
+            // Hide payment modal
+            closeModal('paymentModal');
+            // Reset modal state
+            document.getElementById('payFormSection').classList.remove('hidden');
+            document.getElementById('processingSection').classList.add('hidden');
+
+            if (data.success) {
+                document.getElementById('successMsg').textContent =
+                    '₹' + parseInt(data.amount).toLocaleString('en-IN') + ' paid successfully for ' + selectedTypeName + '.';
+                document.getElementById('txnId').textContent = 'Transaction ID: ' + data.transaction_id;
+                document.getElementById('downloadReceiptBtn').href = '/fees-receipt/?payment_id=' + data.payment_id;
+                openModal('paymentSuccessModal');
+            } else {
+                showToast('Payment failed: ' + (data.error || 'Unknown error'), 'error');
+            }
+        } catch (e) {
+            closeModal('paymentModal');
+            document.getElementById('payFormSection').classList.remove('hidden');
+            document.getElementById('processingSection').classList.add('hidden');
+            showToast('Error: ' + e.message, 'error');
+        }
+    }
+</script>
 {% endblock %}

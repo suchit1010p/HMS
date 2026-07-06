@@ -1,79 +1,224 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Successful</title>
-    
+    <title>Registration Received — HMS Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            text-align: center;
-            padding: 50px;
-            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0a0e1a;
+            color: #f0f4ff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(99,102,241,0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 70%, rgba(139,92,246,0.08) 0%, transparent 55%);
+            pointer-events: none;
         }
         .container {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            max-width: 600px;
-            margin: auto;
+            text-align: center;
+            max-width: 560px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+        }
+        .success-icon {
+            width: 100px; height: 100px;
+            background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1));
+            border: 2px solid rgba(16,185,129,0.3);
+            border-radius: 50%;
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            color: #34d399;
+            animation: successPulse 2s ease-in-out infinite;
+        }
+        @keyframes successPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.3); }
+            50% { box-shadow: 0 0 0 20px rgba(16,185,129,0); }
         }
         h1 {
-            color: #4CAF50;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #a5b4fc, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        p {
-            font-size: 1.2rem;
-            color: #555;
-            margin-bottom: 20px;
+        .subtitle {
+            color: #8892a4;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 36px;
         }
-        .button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: linear-gradient(to right, #4CAF50, #45a049);
+        .info-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 28px;
+        }
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            text-align: left;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .step:last-child { border-bottom: none; }
+        .step-num {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .step-content .step-title {
+            font-weight: 600;
+            color: #f0f4ff;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+        .step-content .step-desc {
+            font-size: 13px;
+            color: #8892a4;
+            line-height: 1.5;
+        }
+        .timer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(245,158,11,0.12);
+            border: 1px solid rgba(245,158,11,0.2);
+            color: #fbbf24;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 28px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
             color: white;
             text-decoration: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
-        .button:hover {
-            background: linear-gradient(to right, #45a049, #4CAF50);
-            transform: scale(1.05);
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.3); }
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 32px;
         }
-        .download-button {
-            background: linear-gradient(to right, #007BFF, #0056b3);
+        .brand-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, #6366f1, #7c3aed);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white;
         }
-        .download-button:hover {
-            background: linear-gradient(to right, #0056b3, #007BFF);
+        .brand-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a5b4fc, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
-    <!-- Include jsPDF library for PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-
 </head>
 <body>
-
 <div class="container">
-    <h1>Registration Successful!</h1>
-    <p>Congratulations! You have successfully registered.</p>
-    <p>Please proceed to the hostel to verify your documents.</p>
-    
-    <a href="/" class="button">View Hostel Information</a>
-    <br>
-    <a href="{% url 'student_pdf' %}" class="button download-button">Download Registration Details</a>
+    <div class="brand">
+        <div class="brand-icon"><i class="fas fa-building"></i></div>
+        <div class="brand-name">HMS Portal</div>
+    </div>
 
+    <div class="success-icon">
+        <i class="fas fa-check"></i>
+    </div>
+
+    <h1>Registration Received!</h1>
+    <p class="subtitle">
+        Your application has been submitted successfully.<br>
+        You'll receive an email with your login credentials soon.
+    </p>
+
+    <div class="timer-badge">
+        <i class="fas fa-clock"></i>
+        Expected response within 24 hours
+    </div>
+
+    <div class="info-box">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <div class="step-title">✅ Registration Submitted</div>
+                <div class="step-desc">Your details have been received and a confirmation email has been sent to your registered email address.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <div class="step-title">🔍 Admin Verification (within 24 hrs)</div>
+                <div class="step-desc">Our team will verify your information and allocate a room for you. This typically takes less than 24 hours.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <div class="step-title">📧 Credentials via Email</div>
+                <div class="step-desc">Once verified, your account will be activated and you'll receive an email with your username and password to log in.</div>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+                <div class="step-title">🏠 Welcome to HMS!</div>
+                <div class="step-desc">Log in to your dashboard to manage payments, raise complaints, and view your room details.</div>
+            </div>
+        </div>
+    </div>
+
+    <a href="/login/" class="btn">
+        <i class="fas fa-sign-in-alt"></i> Go to Login
+    </a>
+
+    <div style="margin-top: 24px; font-size: 13px; color: #4a5568;">
+        Questions? Contact us at <a href="mailto:support@hms.com" style="color: #6366f1;">support@hms.com</a>
+    </div>
 </div>
-
 </body>
 </html>

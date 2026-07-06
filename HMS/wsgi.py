@@ -8,11 +8,12 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/wsgi/
 """
 
 import os
-
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'HMS.settings')
 
+# Vercel expects the application callable to be named 'application'
 application = get_wsgi_application()
 
-app = application
+
+app=application

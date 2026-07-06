@@ -1,59 +1,181 @@
 {% extends "dashboard/base.html" %}
+{% block title %}Settings — HMS{% endblock %}
 
 {% block content %}
-<div class="bg-white dark:bg-dark-700 rounded-lg shadow p-6">
-    <h2 class="text-xl font-semibold dark:text-white mb-6">Account Settings</h2>
-    
-    <div class="space-y-6">
-        <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
-            <h3 class="text-lg font-medium dark:text-white mb-3">Change Password</h3>
-            <form>
-                <div class="grid grid-cols-1 gap-4">
-                    <div>
-                        <label class="block text-gray-500 dark:text-gray-400 mb-1">Current Password</label>
-                        <input type="password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
-                    </div>
-                    <div>
-                        <label class="block text-gray-500 dark:text-gray-400 mb-1">New Password</label>
-                        <input type="password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
-                    </div>
-                    <div>
-                        <label class="block text-gray-500 dark:text-gray-400 mb-1">Confirm New Password</label>
-                        <input type="password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white">
-                    </div>
-                </div>
-                <button type="submit" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition">
-                    Change Password
-                </button>
-            </form>
-        </div>
-        
-        <div class="border-b border-gray-200 dark:border-gray-600 pb-4">
-            <h3 class="text-lg font-medium dark:text-white mb-3">Notification Preferences</h3>
-            <form>
-                <div class="space-y-2">
-                    <div class="flex items-center">
-                        <input id="email-notifications" type="checkbox" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded dark:bg-dark-800">
-                        <label for="email-notifications" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Email Notifications</label>
-                    </div>
-                    <div class="flex items-center">
-                        <input id="sms-notifications" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded dark:bg-dark-800">
-                        <label for="sms-notifications" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">SMS Notifications</label>
+<div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Account Settings</h1>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Manage your account security and preferences.</p>
+</div>
+
+<div class="grid lg:grid-cols-2 gap-6 items-start">
+
+    <!-- Change Password -->
+    <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-6 fade-in">
+        <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-5 flex items-center gap-2">
+            <i class="fas fa-lock text-blue-600 dark:text-blue-400"></i> Change Password
+        </h2>
+
+        <form method="POST" action="{% url 'change_password' %}" id="pwdForm">
+            {% csrf_token %}
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Password</label>
+                    <div class="relative">
+                        <input type="password" name="current_password" id="curPwd" required
+                            class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white" placeholder="Enter current password">
+                        <button type="button" onclick="togglePwd('curPwd','eyeCur')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-eye" id="eyeCur"></i>
+                        </button>
                     </div>
                 </div>
-                <button type="submit" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition">
-                    Save Preferences
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
+                    <div class="relative">
+                        <input type="password" name="new_password" id="newPwd" required oninput="checkStrength(this.value)"
+                            class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white" placeholder="Min 8 characters + number">
+                        <button type="button" onclick="togglePwd('newPwd','eyeNew')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-eye" id="eyeNew"></i>
+                        </button>
+                    </div>
+                    <!-- Strength bar -->
+                    <div class="mt-2">
+                        <div class="h-1.5 bg-gray-200 dark:bg-dark-600 rounded-full overflow-hidden">
+                            <div id="strengthBar" class="h-full rounded-full transition-all duration-300 w-0"></div>
+                        </div>
+                        <p id="strengthText" class="text-xs mt-1 text-gray-400"></p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm New Password</label>
+                    <div class="relative">
+                        <input type="password" name="confirm_password" id="confPwd" required oninput="checkMatch()"
+                            class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-dark-800 dark:text-white" placeholder="Repeat new password">
+                        <button type="button" onclick="togglePwd('confPwd','eyeConf')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-eye" id="eyeConf"></i>
+                        </button>
+                    </div>
+                    <p id="matchText" class="text-xs mt-1"></p>
+                </div>
+
+                <button type="submit" id="pwdBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-lg transition flex items-center gap-2">
+                    <i class="fas fa-key"></i> Update Password
                 </button>
-            </form>
+            </div>
+        </form>
+    </div>
+
+    <!-- Right column -->
+    <div class="flex flex-col gap-6">
+        <!-- Account Info -->
+        <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-6 fade-in">
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                <i class="fas fa-info-circle text-blue-600 dark:text-blue-400"></i> Account Information
+            </h2>
+            <div class="bg-blue-50 dark:bg-blue-900 rounded-xl p-4 flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold">
+                    {{ user.username|first|upper }}
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-800 dark:text-white">{{ user.get_full_name|default:user.username }}</p>
+                    <p class="text-sm text-blue-600 dark:text-blue-300">@{{ user.username }}</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between py-2 border-b border-gray-100 dark:border-dark-600">
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Email</span>
+                    <span class="text-sm font-medium text-gray-800 dark:text-white">{{ user.email }}</span>
+                </div>
+                <div class="flex items-center justify-between py-2 border-b border-gray-100 dark:border-dark-600">
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Status</span>
+                    <span class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2.5 py-1 rounded-full font-semibold">Active</span>
+                </div>
+                <div class="flex items-center justify-between py-2">
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Member Since</span>
+                    <span class="text-sm font-medium text-gray-800 dark:text-white">{{ user.date_joined|date:"d M Y" }}</span>
+                </div>
+            </div>
         </div>
-        
-        <div>
-            <h3 class="text-lg font-medium dark:text-white mb-3">Danger Zone</h3>
-            <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition">
-                <i class="fas fa-exclamation-triangle mr-2"></i> Delete Account
+
+        <!-- Danger Zone -->
+        <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-6 fade-in border-l-4 border-red-500">
+            <h2 class="text-lg font-bold text-red-600 dark:text-red-400 mb-2 flex items-center gap-2">
+                <i class="fas fa-exclamation-triangle"></i> Danger Zone
+            </h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Deleting your account is permanent. All your data will be removed.</p>
+            <button onclick="openModal('deleteModal')" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-2 rounded-lg transition text-sm flex items-center gap-2">
+                <i class="fas fa-trash-alt"></i> Delete Account
             </button>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">This action cannot be undone. All your data will be permanently deleted.</p>
         </div>
     </div>
 </div>
+
+<!-- Delete Confirm Modal -->
+<div id="deleteModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="fixed inset-0 bg-gray-500 dark:bg-gray-900 opacity-75" onclick="closeModal('deleteModal')"></div>
+        <div class="relative bg-white dark:bg-dark-700 rounded-xl shadow-2xl p-8 max-w-sm w-full text-center">
+            <div class="text-5xl mb-4">⚠️</div>
+            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Delete Account?</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">This is permanent and cannot be undone.</p>
+            <div class="flex gap-3 justify-center">
+                <button class="bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-2.5 rounded-lg transition text-sm flex items-center gap-2">
+                    <i class="fas fa-trash-alt"></i> Yes, Delete
+                </button>
+                <button onclick="closeModal('deleteModal')" class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold px-5 py-2.5 rounded-lg transition text-sm hover:bg-gray-50 dark:hover:bg-dark-600">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function togglePwd(id, iconId) {
+    var el   = document.getElementById(id);
+    var icon = document.getElementById(iconId);
+    el.type  = el.type === 'password' ? 'text' : 'password';
+    icon.className = el.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+}
+
+function checkStrength(pwd) {
+    var bar  = document.getElementById('strengthBar');
+    var txt  = document.getElementById('strengthText');
+    var s    = 0;
+    if (pwd.length >= 8)          s++;
+    if (/[A-Z]/.test(pwd))        s++;
+    if (/[0-9]/.test(pwd))        s++;
+    if (/[^A-Za-z0-9]/.test(pwd)) s++;
+    var levels = [
+        { w: '0%',   bg: '',          label: '' },
+        { w: '25%',  bg: '#ef4444',   label: '⚠️ Weak' },
+        { w: '50%',  bg: '#f59e0b',   label: '👍 Fair' },
+        { w: '75%',  bg: '#3b82f6',   label: '💪 Strong' },
+        { w: '100%', bg: '#16a34a',   label: '🔒 Very Strong' },
+    ];
+    bar.style.width = levels[s].w;
+    bar.style.background = levels[s].bg;
+    txt.textContent = levels[s].label;
+    txt.style.color = levels[s].bg;
+}
+
+function checkMatch() {
+    var np = document.getElementById('newPwd').value;
+    var cp = document.getElementById('confPwd').value;
+    var mt = document.getElementById('matchText');
+    if (cp.length === 0) { mt.textContent = ''; return; }
+    mt.textContent = np === cp ? '✅ Passwords match' : '❌ Do not match';
+    mt.style.color  = np === cp ? '#16a34a' : '#ef4444';
+}
+
+document.getElementById('pwdForm').addEventListener('submit', function () {
+    var btn = document.getElementById('pwdBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+    btn.disabled  = true;
+});
+</script>
 {% endblock %}

@@ -264,3 +264,123 @@
             </div>
         </div>
     </div>
+
+<script>
+/* ── Registration form validation (no HTML/style changes) ── */
+(function () {
+    var regForm = document.getElementById('registrationForm');
+    if (!regForm) return;
+
+    var phoneInput       = document.getElementById('phone');
+    var passwordInput    = document.getElementById('password');
+    var confirmInput     = document.getElementById('confirmPassword');
+
+    /* Live: allow only digits in phone, max 10 */
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
+        });
+    }
+
+    /* Live: highlight mismatch on confirm password */
+    function checkMatch() {
+        if (!confirmInput || !passwordInput) return;
+        if (confirmInput.value.length === 0) {
+            confirmInput.style.borderColor = '';
+            return;
+        }
+        confirmInput.style.borderColor =
+            (passwordInput.value === confirmInput.value) ? '#16a34a' : '#ef4444';
+    }
+    if (confirmInput) confirmInput.addEventListener('input', checkMatch);
+    if (passwordInput) passwordInput.addEventListener('input', checkMatch);
+
+    /* On submit: validate before posting */
+    regForm.addEventListener('submit', function (e) {
+        var errors = [];
+
+        /* Phone */
+        if (phoneInput) {
+            var ph = phoneInput.value.replace(/\D/g, '');
+            if (ph.length !== 10) errors.push('Phone number must be exactly 10 digits.');
+        }
+
+        /* Password strength */
+        if (passwordInput) {
+            var pwd = passwordInput.value;
+            if (pwd.length < 8)              errors.push('Password must be at least 8 characters.');
+            if (!/[0-9]/.test(pwd))          errors.push('Password must contain at least one number.');
+        }
+
+        /* Password match */
+        if (passwordInput && confirmInput && passwordInput.value !== confirmInput.value) {
+            errors.push('Passwords do not match.');
+        }
+
+        if (errors.length > 0) {
+            e.preventDefault();
+            alert(errors.join('\n'));
+        }
+    });
+})();
+
+/* ── Login form validation ── */
+(function () {
+    var loginForm = document.getElementById('loginForm');
+    if (!loginForm) return;
+    loginForm.addEventListener('submit', function (e) {
+        var uname = loginForm.querySelector('input[name="username"]');
+        var pass  = loginForm.querySelector('input[name="password"]');
+        if (!uname || !uname.value.trim()) {
+            e.preventDefault();
+            alert('Please enter your username.');
+            return;
+        }
+        if (!pass || !pass.value) {
+            e.preventDefault();
+            alert('Please enter your password.');
+        }
+    });
+})();
+
+/* ── Modal helpers (keep working if script.js already defines them) ── */
+if (typeof openRegistrationModal === 'undefined') {
+    window.openRegistrationModal = function () {
+        var m = document.getElementById('registrationModal');
+        if (m) m.classList.remove('hidden');
+    };
+}
+if (typeof closeRegistrationModal === 'undefined') {
+    window.closeRegistrationModal = function () {
+        var m = document.getElementById('registrationModal');
+        if (m) m.classList.add('hidden');
+    };
+}
+if (typeof openLoginModal === 'undefined') {
+    window.openLoginModal = function () {
+        var m = document.getElementById('loginModal');
+        if (m) m.classList.remove('hidden');
+    };
+}
+if (typeof closeLoginModal === 'undefined') {
+    window.closeLoginModal = function () {
+        var m = document.getElementById('loginModal');
+        if (m) m.classList.add('hidden');
+    };
+}
+if (typeof switchToRegistration === 'undefined') {
+    window.switchToRegistration = function () {
+        closeLoginModal();
+        openRegistrationModal();
+    };
+}
+if (typeof togglePasswordVisibility === 'undefined') {
+    window.togglePasswordVisibility = function (inputId, iconId) {
+        var inp  = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+        if (!inp) return;
+        inp.type = (inp.type === 'password') ? 'text' : 'password';
+        if (icon) icon.className = (inp.type === 'password') ? 'fas fa-eye' : 'fas fa-eye-slash';
+    };
+}
+</script>

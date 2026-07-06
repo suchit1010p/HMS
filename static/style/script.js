@@ -292,8 +292,7 @@ document.getElementById('registrationForm')?.addEventListener('submit', function
         return;
     }
     
-    alert('Registration successful!');
-    closeRegistrationModal();
+    // Allow the form to submit normally to the backend which will redirect to OTP page
 });
 
 // Initialize all functions when DOM is loaded

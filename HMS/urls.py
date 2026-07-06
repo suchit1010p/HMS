@@ -1,29 +1,14 @@
-"""
-URL configuration for HMS project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from HMS import views
-from .views import user_login
-from .views import generate_student_pdf
+from .views import user_login, generate_student_pdf
 from services.views import submit_complaint
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.home),
+    path('', views.home),
     path('login/', user_login, name='login'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('register/', views.RegisterNewStudent, name='register'),
@@ -31,14 +16,26 @@ urlpatterns = [
     path('fees-receipt/', generate_student_pdf, name='student_pdf'),
     path('logout/', views.user_logout, name='logout'),
     path('save/', views.saveEnquiry, name="save"),
-    
-    # after visiting the dashbord
+
+    # Dashboard pages
     path('complaints/', views.complaints, name='complaints'),
     path('payments/', views.payments, name='payments'),
     path('profile/', views.profile, name='profile'),
     path('documents/', views.documents, name='documents'),
-    path('settings/', views.settings, name='settings'),
-    path('submit_complaint/', submit_complaint, name='submit_complaint'),
-    
-]
+    path('settings/', views.user_settings, name='settings'),
 
+    # Forms/Actions
+    path('submit_complaint/', submit_complaint, name='submit_complaint'),
+    path('update_profile/', views.update_profile, name='update_profile'),
+    path('change_password/', views.change_password, name='change_password'),
+
+    # Mock Payment Sandbox
+    path('mock-payment/', views.mock_payment, name='mock_payment'),
+
+    # OTP Verification
+    path('verify-login-otp/', views.verify_login_otp, name='verify_login_otp'),
+    path('verify-registration-otp/', views.verify_registration_otp, name='verify_registration_otp'),
+
+    # Groq AI Chatbot
+    path('chatbot/ask/', views.chatbot_ask, name='chatbot_ask'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

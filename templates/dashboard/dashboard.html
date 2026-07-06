@@ -1,168 +1,179 @@
 {% extends "dashboard/base.html" %}
+{% block title %}Dashboard — HMS{% endblock %}
 
 {% block content %}
-        <!-- Main Content -->
-        <div class="flex-1 p-6">
-            <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">Dashboard</h1>
-            
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="dashboard-card bg-white dark:bg-dark-700 rounded-lg shadow p-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400">Room number</p>
-                            <h3 class="text-2xl font-bold dark:text-white">{{ student_data.Room }}</h3>
-                        </div>
-                        <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
-                            <i class="fas fa-door-open text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="dashboard-card bg-white dark:bg-dark-700 rounded-lg shadow p-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400">Due Payment</p>
-                            <h3 class="text-2xl font-bold dark:text-white">₹5,000</h3>
-                        </div>
-                        <div class="p-3 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">
-                            <i class="fas fa-rupee-sign text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="dashboard-card bg-white dark:bg-dark-700 rounded-lg shadow p-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400">Active Complaints</p>
-                            <h3 class="text-2xl font-bold dark:text-white">{{active_complaints_count}}</h3>
-                        </div>
-                        <div class="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300">
-                            <i class="fas fa-exclamation-triangle text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="dashboard-card bg-white dark:bg-dark-700 rounded-lg shadow p-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400">Days Left</p>
-                            <h3 class="text-2xl font-bold dark:text-white">45</h3>
-                        </div>
-                        <div class="p-3 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300">
-                            <i class="fas fa-calendar-day text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- User Details Section -->
-            <div class="bg-white dark:bg-dark-700 rounded-lg shadow p-6 mb-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-semibold dark:text-white">Personal Information</h2>
-                    <a href="/profile/edit" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 transition">
-                        <i class="fas fa-edit mr-1"></i> Edit
-                    </a>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Full Name</p>
-                        <p class="dark:text-white">{{ user.get_full_name }}</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Username</p>
-                        <p class="dark:text-white">{{ user.username }}</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Email</p>
-                        <p class="dark:text-white">{{ user.email }}</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Phone</p>
-                        <p class="dark:text-white">{{ student_data.Phone }}</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Date of Birth</p>
-                        <p class="dark:text-white">{{ student_data.dob }}</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Address</p>
-                        <p class="dark:text-white">{{ student_data.Address }}</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- User Details Section -->
-            <div class="bg-white dark:bg-dark-700 rounded-lg shadow p-6 mb-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-semibold dark:text-white">Personal Information</h2>
-                    <a href="/profile/edit" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 transition">
-                        <i class="fas fa-edit mr-1"></i> Edit
-                    </a>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">University</p>
-                        <p class="dark:text-white">{{ student_data.University }}</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Enrollment Year</p>
-                        <p class="dark:text-white">{{ student_data.Enrollment_Year }}</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Course</p>
-                        <p class="dark:text-white">{{ student_data.Course }}</p>
-                    </div>
-                    <div>
-                        <p class="text-gray-500 dark:text-gray-400 mb-1">Program Duration</p>
-                        <p class="dark:text-white">{{ student_data.Program_Duration }}</p>
-                    </div>
-                </div>
-            </div>
+<!-- Page header -->
+<div class="mb-6 fade-in">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
+        Welcome back, {{ user.first_name|default:user.username }}! 👋
+    </h1>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Here's a summary of your hostel account.</p>
+</div>
 
-            <!-- Recent Activities -->
-            <div class="bg-white dark:bg-dark-700 rounded-lg shadow p-6">
-                <h2 class="text-xl font-semibold dark:text-white mb-6">Recent Activities</h2>
-                
-                <div class="space-y-4">
-                    <div class="flex items-start">
-                        <div class="p-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 mr-4">
-                            <i class="fas fa-money-bill-wave"></i>
-                        </div>
-                        <div>
-                            <p class="font-medium dark:text-white">Payment Received</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Your payment of ₹10,000 for March 2023 has been received.</p>
-                            <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">2 days ago</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start">
-                        <div class="p-2 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 mr-4">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div>
-                            <p class="font-medium dark:text-white">Complaint Resolved</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Your complaint about WiFi connectivity has been resolved.</p>
-                            <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">5 days ago</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start">
-                        <div class="p-2 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300 mr-4">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div>
-                            <p class="font-medium dark:text-white">New Notice</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">New hostel rules have been posted. Please check the notice board.</p>
-                            <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">1 week ago</p>
-                        </div>
-                    </div>
-                </div>
+<!-- Stat cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <!-- Room -->
+    <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 flex items-center gap-4 hover-grow card-hover fade-in">
+        <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fas fa-door-open"></i>
+        </div>
+        <div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Room</p>
+            <p class="text-xl font-bold text-gray-800 dark:text-white">{{ student_data.Room|default:"—" }}</p>
+        </div>
+    </div>
+    <!-- Total paid -->
+    <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 flex items-center gap-4 hover-grow card-hover fade-in">
+        <div class="bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fas fa-rupee-sign"></i>
+        </div>
+        <div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Total Paid</p>
+            <p class="text-xl font-bold text-gray-800 dark:text-white">₹{{ total_paid|default:"0" }}</p>
+        </div>
+    </div>
+    <!-- Complaints -->
+    <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 flex items-center gap-4 hover-grow card-hover fade-in">
+        <div class="bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300 w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fas fa-ticket-alt"></i>
+        </div>
+        <div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Complaints</p>
+            <p class="text-xl font-bold text-gray-800 dark:text-white">{{ active_complaints_count }}</p>
+        </div>
+    </div>
+    <!-- Access Status -->
+    <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 flex items-center gap-4 hover-grow card-hover fade-in">
+        <div class="bg-{{ hostel_status.color|default:'gray' }}-100 dark:bg-{{ hostel_status.color|default:'gray' }}-900 text-{{ hostel_status.color|default:'gray' }}-600 dark:text-{{ hostel_status.color|default:'gray' }}-300 w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+            <i class="fas {% if hostel_status.state == 'active' %}fa-calendar-check{% elif hostel_status.state == 'grace' %}fa-hourglass-half{% else %}fa-exclamation-triangle{% endif %}"></i>
+        </div>
+        <div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Access Status</p>
+            <p class="text-base font-bold {% if hostel_status.color == 'red' %}text-red-500{% elif hostel_status.color == 'yellow' %}text-yellow-500{% else %}text-green-500{% endif %}">{{ hostel_status.message|default:"Unknown" }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Content grid -->
+<div class="grid lg:grid-cols-3 gap-6">
+    <!-- Personal Info (spans 2 cols) -->
+    <div class="lg:col-span-2 bg-white dark:bg-dark-700 rounded-xl shadow-md p-6 fade-in">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                <i class="fas fa-user-circle text-blue-600 dark:text-blue-400"></i> Personal Information
+            </h2>
+            <a href="{% url 'profile' %}" class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md transition flex items-center gap-1">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+            {% with fields=student_data %}
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">Full Name</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.Name|default:"—" }}</p>
             </div>
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">Username</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.Username|default:"—" }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">Email</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.Email|default:"—" }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">Phone</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.Phone|default:"—" }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">Date of Birth</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.dob|default:"—" }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">Address</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.Address|default:"—" }}, {{ student_data.City|default:"" }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">University</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.University|default:"—" }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">Enrollment Year</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.Enrollment_Year|default:"—" }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">Program Duration</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.Program_Duration|default:"—" }} Year(s)</p>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">State / ZIP</p>
+                <p class="font-medium text-gray-800 dark:text-white">{{ student_data.State|default:"—" }} — {{ student_data.ZIP|default:"—" }}</p>
+            </div>
+            {% endwith %}
         </div>
     </div>
 
+    <!-- Right column -->
+    <div class="flex flex-col gap-4">
+        <!-- Quick Actions -->
+        <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 fade-in">
+            <h3 class="text-base font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                <i class="fas fa-bolt text-blue-600 dark:text-blue-400"></i> Quick Actions
+            </h3>
+            <div class="flex flex-col gap-2">
+                {% if hostel_status.state != 'active' %}
+                <a href="{% url 'payments' %}" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition">
+                    <i class="fas fa-credit-card"></i> Pay Hostel Fees
+                </a>
+                {% endif %}
+                <a href="{% url 'complaints' %}" class="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition">
+                    <i class="fas fa-plus"></i> New Complaint
+                </a>
+                <a href="{% url 'student_pdf' %}" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition">
+                    <i class="fas fa-download"></i> Download Receipt
+                </a>
+                <a href="{% url 'profile' %}" class="flex items-center gap-2 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-300 text-sm font-medium px-4 py-2.5 rounded-lg transition">
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                </a>
+            </div>
+        </div>
 
+        <!-- Recent Complaints -->
+        {% if recent_complaints %}
+        <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 fade-in">
+            <h3 class="text-base font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
+                <i class="fas fa-ticket-alt text-yellow-500"></i> Recent Complaints
+            </h3>
+            {% for complaint in recent_complaints %}
+            <div class="border-b border-gray-100 dark:border-dark-600 py-2 last:border-0">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-gray-800 dark:text-white capitalize">{{ complaint.complaint_type }}</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full font-medium {% if complaint.status == 'resolved' %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300{% elif complaint.status == 'in_progress' %}bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300{% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300{% endif %}">
+                        {{ complaint.status|capfirst }}
+                    </span>
+                </div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{{ complaint.date_submitted|date:"d M Y" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Recent Payments -->
+        {% if recent_payments %}
+        <div class="bg-white dark:bg-dark-700 rounded-xl shadow-md p-5 fade-in">
+            <h3 class="text-base font-bold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
+                <i class="fas fa-receipt text-green-500"></i> Recent Payments
+            </h3>
+            {% for payment in recent_payments %}
+            <div class="border-b border-gray-100 dark:border-dark-600 py-2 last:border-0">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-semibold text-green-600 dark:text-green-400">₹{{ payment.amount }}</span>
+                    <span class="text-xs bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">Paid</span>
+                </div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{{ payment.paid_at|date:"d M Y" }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
